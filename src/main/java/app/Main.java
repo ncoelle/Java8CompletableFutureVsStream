@@ -21,7 +21,7 @@ class Main {
 				.map(MyTask::calculate)
 				.collect(Collectors.toList());
 		long duration = (System.nanoTime() - start);
-		System.out.printf("Processed %d tasks in %d milliseconds\n" + TimeUnit.NANOSECONDS.toMillis(duration));
+		System.out.printf("Processed %d tasks in %d milliseconds\n", tasks.size(),  TimeUnit.NANOSECONDS.toMillis(duration));
 		System.out.println("result = " + result);
 	}
 }
