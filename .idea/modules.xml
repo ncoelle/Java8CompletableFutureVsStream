@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Java8CompletableFutureVsStream.iml" filepath="$PROJECT_DIR$/.idea/Java8CompletableFutureVsStream.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Java8CompletableFutureVsStream_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Java8CompletableFutureVsStream_main.iml" group="Java8CompletableFutureVsStream" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Java8CompletableFutureVsStream_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Java8CompletableFutureVsStream_test.iml" group="Java8CompletableFutureVsStream" />
+    </modules>
+  </component>
+</project>
