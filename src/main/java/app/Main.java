@@ -13,8 +13,14 @@ import java.util.stream.IntStream;
 class Main {
 	public static void main(String[] args) {
 		final List<MyTask> tasks = IntStream.range(0, 10)
-				.mapToObj(i -> new MyTask(1))
+				.mapToObj(i -> new MyTask(100))
 				.collect(Collectors.toList());
+
+		// dry run to "fill" the JIT optimizer
+		@SuppressWarnings("unused") final List<Integer> result = tasks.parallelStream()
+				.map(MyTask::calculate)
+				.collect(Collectors.toList());
+
 		runSequentially(tasks);
 		useParallelStream(tasks);
 		useCompletableFuture(tasks);
@@ -22,28 +28,29 @@ class Main {
 	}
 
 	private static void runSequentially(List<MyTask> tasks) {
+		System.out.println("\nRunning sequentially");
 		long start = System.nanoTime();
 		final List<Integer> result = tasks.stream()
 				.map(MyTask::calculate)
 				.collect(Collectors.toList());
 		long duration = (System.nanoTime() - start);
-		System.out.println("Running sequentially");
 		System.out.printf("Processed %d tasks in %d milliseconds\n", tasks.size(), TimeUnit.NANOSECONDS.toMillis(duration));
-		System.out.println("result = " + result);
+		result.clear();
 	}
 
 	private static void useParallelStream(List<MyTask> tasks) {
+		System.out.println("\nUsing parallelStream()");
 		long start = System.nanoTime();
 		final List<Integer> result = tasks.parallelStream()
 				.map(MyTask::calculate)
 				.collect(Collectors.toList());
 		long duration = (System.nanoTime() - start);
-		System.out.println("\nUsing parallelStream()");
 		System.out.printf("Processed %d tasks in %d milliseconds\n", tasks.size(), TimeUnit.NANOSECONDS.toMillis(duration));
-		System.out.println("result = " + result);
+		result.clear();
 	}
 
 	private static void useCompletableFuture(List<MyTask> tasks) {
+		System.out.println("\nUsing CompletableFuture()");
 		long start = System.nanoTime();
 		final List<CompletableFuture<Integer>> futures = tasks.stream()
 				.map(t -> CompletableFuture.supplyAsync(t::calculate))
@@ -52,12 +59,12 @@ class Main {
 				.map(CompletableFuture::join)
 				.collect(Collectors.toList());
 		long duration = (System.nanoTime() - start);
-		System.out.println("\nUsing CompletableFuture()");
 		System.out.printf("Processed %d tasks in %d milliseconds\n", tasks.size(), TimeUnit.NANOSECONDS.toMillis(duration));
-		System.out.println("result = " + result);
+		result.clear();
 	}
 
 	private static void useCompletableFutureWithExecutor(List<MyTask> tasks) {
+		System.out.println("\nUsing CompletableFuture with Executor");
 		final long start = System.nanoTime();
 		final ExecutorService executor = Executors.newFixedThreadPool(Math.min(tasks.size(), 10));
 		final List<CompletableFuture<Integer>> futures = tasks.stream()
@@ -67,9 +74,8 @@ class Main {
 				.map(CompletableFuture::join)
 				.collect(Collectors.toList());
 		long duration = (System.nanoTime() - start);
-		System.out.println("\nUsing CompletableFuture with Executor");
 		System.out.printf("Processed %d tasks in %d milliseconds\n", tasks.size(), TimeUnit.NANOSECONDS.toMillis(duration));
-		System.out.println("result = " + result);
 		executor.shutdown();
+		result.clear();
 	}
 }
