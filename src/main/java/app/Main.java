@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 class Main {
 	public static void main(String[] args) {
 		final List<MyTask> tasks = IntStream.range(0, 10)
-				.mapToObj(MyTask::new)
+				.mapToObj(i -> new MyTask(1))
 				.collect(Collectors.toList());
 		runSequentially(tasks);
 		useParallelStream(tasks);
